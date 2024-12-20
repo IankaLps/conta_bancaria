@@ -45,16 +45,42 @@ export class ContaController implements ContaRepository {
         console.log(colors.fg.red, "\A CONTA NÚMERO: " + numero + " NÃO FOI ENCONTRADA!", colors.reset);
     }
     
-    sacar(numero: number, valor: number): void {
-        throw new Error("Method not implemented.");
+    public sacar(numero: number, valor: number): void {
+        let conta = this.buscarNoArray(numero);
+
+        if (conta != null) {
+            if(conta.sacar(valor) == true)
+                console.log(colors.fg.green, "\nO SAQUE NA CONTA NUMERO: " + numero +
+            " FOI EFETUADO COM SUCESSO!", colors.reset);
+        } else 
+        console.log(colors.fg.red, "\nA CONTA NUMERO: " + numero +
+            " NÃO FOI ENCONTRADA!", colors.reset);
     }
-    depositar(numero: number, valor: number): void {
-        throw new Error("Method not implemented.");
+    public depositar(numero: number, valor: number): void {
+        let conta = this.buscarNoArray(numero);
+
+        if (conta != null) {
+            conta.depositar(valor);
+            console.log(colors.fg.green, "\nO DEPOSITO NA CONTA NÚMERO: " + numero +
+                " FOI EFETUADO COM SUCESSO!", colors.reset);
+        } else 
+        console.log(colors.fg.red, "\nA CONTA NUMERO: " + numero + 
+            " NÃO FOI ENCONTRADA!", colors.reset);
     }
     transferir(numeroOrigem: number, numeroDestino: number, valor: number): void {
-        throw new Error("Method not implemented.");
-    }
+        let contaOrigem = this.buscarNoArray(numeroOrigem);
+        let contaDestino = this.buscarNoArray(numeroDestino);
 
+        if (contaOrigem != null && contaDestino != null) {
+            if(contaOrigem.sacar(valor) == true){
+                contaDestino.depositar(valor);
+                console.log(colors.fg.green, "\nA TRANSFERÊNCIA DA CONTA NUMERO: " + numeroOrigem + 
+                    " PARA A CONTA NUMERO: " + numeroDestino + " FOI EFETUADA COM SUCESSO!", colors.reset)
+            }
+    } else 
+    console.log(colors.fg.green, "\nA CONTA NUMERO: " + numeroOrigem + 
+        " E/OU A CONTA NUMERO: " + numeroDestino + " NÃO FORAM ENCONTRADAS!", colors.reset);
+}
 
     /*Métodos Auxuliares*/
     /*Gerar Número da Conta*/
